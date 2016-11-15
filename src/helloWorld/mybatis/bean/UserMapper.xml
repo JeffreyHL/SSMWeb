@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="helloWorld.mybatis.bean.UserMapper">
+
+	<sql id="userColuns"> userID,name,age,sex,remark </sql>
+
+	<!-- 查询 -->
+	<select id="selectUser" parameterType="java.lang.String"
+		resultType="User">
+		select
+		<include refid="userColuns" />
+		from user where userID = #{userID};
+	</select>
+
+	<select id="selectAll" resultType="User">
+		select * from user;
+	</select>
+
+	<!-- 插入 -->
+	<insert id="insertUser" parameterType="User">
+		insert into
+		user(name,age,sex,remark)
+		values(#{name},#{age},#{sex},#{remark})
+	</insert>
+
+	<!-- 批量插入 -->
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into user(name,age,sex,remark)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.name},#{item.age},#{item.sex},#{item.remark})
+		</foreach>
+	</insert>
+
+</mapper>  
