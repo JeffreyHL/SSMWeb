@@ -25,6 +25,7 @@ public class HelloWorld {
 	}
 	
 	public HelloWorld(){
+		log.debug("HAHA");
 		session = initSession();
 		userMapper = session.getMapper(UserMapper.class);
 		testInsert();
