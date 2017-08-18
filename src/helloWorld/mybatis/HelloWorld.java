@@ -1,4 +1,5 @@
 package helloWorld.mybatis;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,13 +19,13 @@ public class HelloWorld {
 
 	private SqlSession session = null;
 	private UserMapper userMapper = null;
-	
+
 	public static void main(String[] args) {
-	    new HelloWorld();
-	    System.out.println("Hello, MyBatis!");
+		new HelloWorld();
+		System.out.println("Hello, MyBatis!");
 	}
-	
-	public HelloWorld(){
+
+	public HelloWorld() {
 		log.debug("HAHA");
 		session = initSession();
 		userMapper = session.getMapper(UserMapper.class);
@@ -32,30 +33,30 @@ public class HelloWorld {
 		testUpdate();
 		testSelect();
 		testDelete();
-		if(null != session){
+		if (null != session) {
 			session.commit();
 			session.close();
 		}
 	}
-	
-	private void testDelete(){
+
+	private void testDelete() {
 		System.out.println(userMapper.deleteUser(11));
 	}
-	
-	private void testUpdate(){
+
+	private void testUpdate() {
 		User user = new User();
 		user.setUserID(11);
 		user.setName("修改");
 		System.out.println(userMapper.updateUser(user));
 	}
-	
-	private void testInsert(){
+
+	private void testInsert() {
 		User user = new User();
 		user.setUserID(11);
 		user.setName("修改");
 		System.out.println(user.toString());
 		System.out.println(userMapper.insertUser2(user));
-		//批量插入
+		// 批量插入
 		User u1 = new User();
 		u1.setName("修改");
 		User u2 = new User();
@@ -65,41 +66,36 @@ public class HelloWorld {
 		l.add(u2);
 		userMapper.insertBatch(l);
 	}
-	
-	
-	private void testSelect(){
+
+	private void testSelect() {
 		User user = userMapper.selectUser("10003");
 		System.out.println(user.toString());
 		user = userMapper.selectUser2("10000");
 		System.out.println(user.toString());
 		List<User> list = userMapper.selectAll();
-		for(User u : list){
+		for (User u : list) {
 			System.out.println(u.toString());
 		}
-		
+
 		List<User> list2 = userMapper.fuzzyQuery("展");
-		for(User u : list2){
+		for (User u : list2) {
 			System.out.println(u.toString());
 		}
 	}
-	
-	private SqlSession initSession(){
-		//获取配置文件的输入流  
-	    InputStream is;
+
+	private SqlSession initSession() {
+		// 获取配置文件的输入流
+		InputStream is;
 		try {
 			is = Resources.getResourceAsStream("helloWorld/mybatis/config.xml");
-			//获取我们的SqlSessionFactory（相当于Hibernate的SessionFactory）；SqlSessionFactoryBuilder有点类似于Hibernate的Configuration。  
-		    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);  
-		    //获取一个Session  
-		    return sqlSessionFactory.openSession();
+			// 获取我们的SqlSessionFactory（相当于Hibernate的SessionFactory）；SqlSessionFactoryBuilder有点类似于Hibernate的Configuration。
+			SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
+			// 获取一个Session
+			return sqlSessionFactory.openSession();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 }
-
-
-
-	
